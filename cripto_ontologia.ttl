@@ -1,0 +1,434 @@
+@prefix cripto: <http://unal.edu.co/cripto#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+cripto:AlgoritmoCriptografico a rdfs:Class ;
+    rdfs:label "Clase base que representa cualquier método de transformación de datos para seguridad."@es .
+
+cripto:AlgoritmoPostCuantico a rdfs:Class ;
+    rdfs:label "Algoritmos diseñados para ser resistentes ante ataques realizados por computadoras cuánticas."@es ;
+    rdfs:subClassOf cripto:EstadoSeguridad .
+
+cripto:AlgoritmoVulnerable a rdfs:Class ;
+    rdfs:label "Algoritmos que han sido deprecados o cuyas defensas han sido superadas teórica o prácticamente."@es ;
+    rdfs:subClassOf cripto:EstadoSeguridad .
+
+cripto:CifradoAsimetrico a rdfs:Class ;
+    rdfs:label "Algoritmos que emplean un par de claves: una pública para cifrar y una privada para descifrar."@es ;
+    rdfs:subClassOf cripto:AlgoritmoCriptografico .
+
+cripto:CifradoSimetrico a rdfs:Class ;
+    rdfs:label "Algoritmos que utilizan una única clave para cifrar y descifrar la información."@es ;
+    rdfs:subClassOf cripto:AlgoritmoCriptografico .
+
+cripto:ContextoUso a rdfs:Class ;
+    rdfs:label "Representa el entorno o escenario tecnológico donde se aplicará la solución criptográfica."@es .
+
+cripto:EstadoSeguridad a rdfs:Class ;
+    rdfs:label "Categorización de la robustez y vigencia de un algoritmo frente a amenazas actuales."@es .
+
+cripto:FuncionHash a rdfs:Class ;
+    rdfs:label "Algoritmos diseñados para generar una huella digital única de longitud fija a partir de datos."@es ;
+    rdfs:subClassOf cripto:AlgoritmoCriptografico .
+
+cripto:InfraestructuraCritica a rdfs:Class ;
+    rdfs:label "Sistemas de alta prioridad que requieren los estándares de seguridad más rigurosos."@es ;
+    rdfs:subClassOf cripto:ContextoUso .
+
+cripto:RecursoLimitado a rdfs:Class ;
+    rdfs:label "Entornos con restricciones severas de procesamiento, memoria o energía (ej. Sensores IoT)."@es ;
+    rdfs:subClassOf cripto:ContextoUso .
+
+cripto:Central_Electrica a cripto:InfraestructuraCritica ;
+    rdfs:label "Sistema de control de red eléctrica nacional"@es ;
+    cripto:añoDeCreacion "2022"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:AES_256 ;
+    cripto:fueEstandarizadoPor "NIST SP 800-82" ;
+    cripto:tieneLimitacionGeneral "Sujeto a regulaciones de seguridad nacional (NERC CIP)" ;
+    cripto:tieneLimitacionTecnica "Requiere latencia menor a 10ms para control en tiempo real" ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 256 .
+
+cripto:Colision_MD5 a cripto:AlgoritmoVulnerable ;
+    rdfs:label "Colisión de Hash en MD5 detectada"@es ;
+    cripto:añoDeCreacion "2004"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:ECC_256 ;
+    cripto:esVulnerableA "Ataques de preimagen y colisiones"@es ;
+    cripto:fueEstandarizadoPor "Hans Dobbertin / Arjen Lenstra" ;
+    cripto:tieneLimitacionGeneral "No usar para firmas digitales o almacenamiento de contraseñas" ;
+    cripto:tieneLimitacionTecnica "Permite generar dos archivos distintos con el mismo hash" ;
+    cripto:tieneNivelSeguridad cripto:Obsoleto ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 128 .
+
+cripto:Control_Ferroviario a cripto:InfraestructuraCritica ;
+    rdfs:label "Gestión de señalización de trenes de alta velocidad"@es ;
+    cripto:añoDeCreacion "2023"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:SHA_3 ;
+    cripto:requiereMemoria "Media" ;
+    cripto:tieneLimitacionGeneral "Fallo en integridad puede causar colisiones fatales" ;
+    cripto:tieneLimitacionTecnica "Protocolos propietarios que deben coexistir con estándares abiertos" ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Media" ;
+    cripto:utilizaClaveDeTamano 512 .
+
+cripto:DES a cripto:CifradoSimetrico ;
+    rdfs:label "Estándar de Cifrado de Datos (Obsoleto)"@es ;
+    cripto:añoDeCreacion "1977"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:SistemasHeredados ;
+    cripto:esVulnerableA "Ataque de fuerza bruta por espacio de claves reducido"@es ;
+    cripto:fueEstandarizadoPor "NBS (ahora NIST)" ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "No debe usarse para proteger información sensible actual"@es ;
+    cripto:tieneLimitacionTecnica "Clave demasiado corta para hardware moderno"@es ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoVulnerable ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 56 .
+
+cripto:Debilidad_RC4 a cripto:AlgoritmoVulnerable ;
+    rdfs:label "Sesgo en el flujo de claves RC4"@es ;
+    cripto:añoDeCreacion "2015"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:SistemasHeredados ;
+    cripto:esVulnerableA "Ataques estadísticos Fluhrer-Mantin-Shamir (FMS)"@es ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "Prohibido por el RFC 7465 para todas las versiones de TLS" ;
+    cripto:tieneLimitacionTecnica "Los primeros bytes del keystream no son aleatorios" ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoVulnerable ;
+    cripto:utilizaClaveDeTamano 128 .
+
+cripto:DiffieHellman a cripto:CifradoAsimetrico ;
+    rdfs:label "Protocolo de intercambio de claves"@es ;
+    cripto:añoDeCreacion "1976"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:TransmisionTiempoReal ;
+    cripto:esVulnerableA "Ataques de Hombre en el Medio (MitM) si no se usa con firmas digitales"@es ;
+    cripto:fueEstandarizadoPor "IETF (RFC 2631)" ;
+    cripto:requiereMemoria "Media" ;
+    cripto:tieneLimitacionGeneral "Solo sirve para acordar una clave, no para cifrar mensajes directamente"@es ;
+    cripto:tieneLimitacionTecnica "No proporciona autenticación por sí mismo; ambas partes deben confiar en que el otro es quien dice ser"@es ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Baja" ;
+    cripto:utilizaClaveDeTamano 2048 .
+
+cripto:Dilithium a cripto:AlgoritmoPostCuantico ;
+    rdfs:label "Dilithium - Firma digital basada en redes"@es ;
+    cripto:añoDeCreacion "2024"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:FirmaDigital ;
+    cripto:esVulnerableA "No vulnerable a ataques cuánticos conocidos"@es ;
+    cripto:fueEstandarizadoPor "NIST (FIPS 204)" ;
+    cripto:requiereMemoria "Media" ;
+    cripto:tieneLimitacionGeneral "Equilibrio óptimo entre tamaño de firma y velocidad de verificación" ;
+    cripto:tieneLimitacionTecnica "Firmas significativamente más grandes que las de ECDSA o RSA" ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoPostCuantico ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 2592 .
+
+cripto:Factorizacion_RSA_1024 a cripto:AlgoritmoVulnerable ;
+    rdfs:label "RSA-1024 Factorizable por supercomputación"@es ;
+    cripto:añoDeCreacion "2010"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:ECC_ ;
+    cripto:esVulnerableA "Factorización de enteros de gran escala"@es ;
+    cripto:fueEstandarizadoPor "NIST (Deprecado desde 2010)" ;
+    cripto:tieneLimitacionGeneral "Ya no cumple con los estándares de cumplimiento PCI-DSS" ;
+    cripto:tieneLimitacionTecnica "Poder de cómputo actual permite romper estas claves en meses" ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoVulnerable ;
+    cripto:tieneVelocidadEjecucion "Media" ;
+    cripto:utilizaClaveDeTamano 1024 .
+
+cripto:Falcon a cripto:AlgoritmoPostCuantico ;
+    rdfs:label "Falcon - Firma digital de alta eficiencia"@es ;
+    cripto:añoDeCreacion "2024"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:DispositivosIoT ;
+    cripto:esVulnerableA "Complejidad de implementación de punto flotante"@es ;
+    cripto:fueEstandarizadoPor "NIST" ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "El mejor para cuando el ancho de banda es el recurso más limitado" ;
+    cripto:tieneLimitacionTecnica "Requiere aritmética de punto flotante de alta precisión, difícil en algunos chips" ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoPostCuantico ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 897 .
+
+cripto:FuerzaBruta_DES a cripto:AlgoritmoVulnerable ;
+    rdfs:label "DES-56 vulnerable a cracking masivo"@es ;
+    cripto:añoDeCreacion "1999"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:AutenticacionUsuarios ;
+    cripto:esVulnerableA "Ataque de fuerza bruta por claves de 56 bits"@es ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "Completamente inseguro para cualquier propósito moderno" ;
+    cripto:tieneLimitacionTecnica "Hardware especializado (ASIC) puede probar todas las claves en minutos" ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoVulnerable ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 56 .
+
+cripto:MD5 a cripto:FuncionHash ;
+    cripto:añoDeCreacion "1991"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:SistemasHeredados ;
+    cripto:esVulnerableA "Colisiones casi instantáneas"@es ;
+    cripto:fueEstandarizadoPor "IETF" ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "Solo útil para verificar integridad de archivos no críticos (checksums)"@es ;
+    cripto:tieneLimitacionTecnica "Criptográficamente roto; fácil de falsificar"@es ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoVulnerable ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 128 .
+
+cripto:Marcapasos_Conectado a cripto:RecursoLimitado ;
+    rdfs:label "Dispositivo médico implantable"@es ;
+    cripto:añoDeCreacion "2025"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:AES_128 ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "La vida de la batería es crítica para la vida del paciente" ;
+    cripto:tieneLimitacionTecnica "Ciclos de CPU limitados para evitar sobrecalentamiento" ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 128 .
+
+cripto:Planta_Agua a cripto:InfraestructuraCritica ;
+    rdfs:label "Control de potabilización y distribución de agua"@es ;
+    cripto:añoDeCreacion "2021"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:RSA_4096 ;
+    cripto:requiereMemoria "Alta" ;
+    cripto:tieneLimitacionGeneral "Dificultad para actualizar algoritmos in-situ" ;
+    cripto:tieneLimitacionTecnica "Hardware industrial con ciclos de vida de 20 años" ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Baja" ;
+    cripto:utilizaClaveDeTamano 4096 .
+
+cripto:RSA_2048 a cripto:CifradoAsimetrico ;
+    rdfs:label "RSA con clave de 2048 bits (Estándar actual)"@es ;
+    cripto:añoDeCreacion "1977"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:FirmaDigital ;
+    cripto:esVulnerableA "Factorización de números primos por computación cuántica"@es ;
+    cripto:fueEstandarizadoPor "RSA Laboratories / IETF" ;
+    cripto:requiereMemoria "Media" ;
+    cripto:tieneLimitacionGeneral "Mucho más lento que el cifrado simétrico; se usa solo para pequeñas cantidades de datos"@es ;
+    cripto:tieneLimitacionTecnica "Requiere claves muy grandes para mantener el nivel de seguridad frente a ataques de factorización"@es ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Baja" ;
+    cripto:utilizaClaveDeTamano 2048 .
+
+cripto:Router_Legacy a cripto:RecursoLimitado ;
+    rdfs:label "Router de casa modelo 2010"@es ;
+    cripto:añoDeCreacion "2010"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:TDES ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "No soporta protocolos modernos como TLS 1.3" ;
+    cripto:tieneLimitacionTecnica "Memoria RAM de 16MB, procesador MIPS antiguo" ;
+    cripto:tieneNivelSeguridad cripto:Obsoleto ;
+    cripto:tieneVelocidadEjecucion "Baja" ;
+    cripto:utilizaClaveDeTamano 168 .
+
+cripto:SHA_1 a cripto:FuncionHash ;
+    cripto:añoDeCreacion "1995"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:SistemasHeredados ;
+    cripto:esVulnerableA "Ataques de colisión prácticos"@es ;
+    cripto:fueEstandarizadoPor "NIST" ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "Ya no se considera seguro para firmas digitales"@es ;
+    cripto:tieneLimitacionTecnica "Google demostró la primera colisión en 2017"@es ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoVulnerable ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 160 .
+
+cripto:SHA_256 a cripto:FuncionHash ;
+    cripto:añoDeCreacion "2001"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:AutenticacionUsuarios ;
+    cripto:esVulnerableA "Ataques de extensión de longitud (en ciertos modos)"@es ;
+    cripto:fueEstandarizadoPor "NIST" ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "Ampliamente compatible pero vulnerable a ataques cuánticos a largo plazo"@es ;
+    cripto:tieneLimitacionTecnica "Diseño basado en Merkle-Damgård"@es ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 256 .
+
+cripto:Satelite_Gob a cripto:InfraestructuraCritica ;
+    rdfs:label "Enlace satelital de datos oficiales"@es ;
+    cripto:añoDeCreacion "2024"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:Kyber ;
+    cripto:fueEstandarizadoPor "NIST PQC Project" ;
+    cripto:tieneLimitacionGeneral "Imposible de intervenir físicamente tras el lanzamiento" ;
+    cripto:tieneLimitacionTecnica "Sensible a la radiación cósmica; requiere redundancia en memoria" ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoPostCuantico ;
+    cripto:tieneVelocidadEjecucion "Media" ;
+    cripto:utilizaClaveDeTamano 768 .
+
+cripto:SensorIoT_Temp a cripto:RecursoLimitado ;
+    rdfs:label "Sensor IoT de baja potencia"@es ;
+    cripto:añoDeCreacion "2024"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:ChaCha20 ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "No soporta cifrado asimétrico pesado como RSA" ;
+    cripto:tieneLimitacionTecnica "Batería de moneda (CR2032), CPU de 8 bits" ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 128 .
+
+cripto:SmartCard_NFC a cripto:RecursoLimitado ;
+    rdfs:label "Tarjeta de pago sin contacto"@es ;
+    cripto:añoDeCreacion "2023"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:ECC_256 ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "Vulnerable a ataques de canal lateral si no hay protección física" ;
+    cripto:tieneLimitacionTecnica "Espacio de almacenamiento EEPROM muy reducido" ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Media" ;
+    cripto:utilizaClaveDeTamano 256 .
+
+cripto:SphincsPlus a cripto:AlgoritmoPostCuantico ;
+    rdfs:label "SPHINCS+ - Firma digital 'stateless' basada en hash"@es ;
+    cripto:añoDeCreacion "2024"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:AlmacenamientoLargoPlazo ;
+    cripto:esVulnerableA "Resistente incluso si los problemas de redes son resueltos"@es ;
+    cripto:fueEstandarizadoPor "NIST (FIPS 205)" ;
+    cripto:requiereMemoria "Alta" ;
+    cripto:tieneLimitacionGeneral "Considerado el más seguro a largo plazo por basarse solo en funciones hash" ;
+    cripto:tieneLimitacionTecnica "Generación de firma muy costosa computacionalmente" ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoPostCuantico ;
+    cripto:tieneVelocidadEjecucion "Baja" ;
+    cripto:utilizaClaveDeTamano 32 .
+
+cripto:añoDeCreacion a rdf:Property ;
+    rdfs:label "Año en el que el algoritmo fue publicado originalmente."@es ;
+    rdfs:domain cripto:AlgoritmoCriptografico ;
+    rdfs:range xsd:gYear .
+
+cripto:esRecomendadoPara a rdf:Property ;
+    rdfs:label "Vincula un algoritmo con su contexto de uso ideal."@es ;
+    rdfs:domain cripto:AlgoritmoCriptografico ;
+    rdfs:range cripto:ContextoUso .
+
+cripto:esVulnerableA a rdf:Property ;
+    rdfs:label "Indica que un algoritmo tiene debilidades frente a una amenaza específica."@es ;
+    rdfs:domain cripto:AlgoritmoCriptografico ;
+    rdfs:range cripto:EstadoSeguridad .
+
+cripto:fueEstandarizadoPor a rdf:Property ;
+    rdfs:label "Indica la organización que estandarizó el algoritmo (ej. NIST)."@es ;
+    rdfs:domain cripto:AlgoritmoCriptografico ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf foaf:name .
+
+cripto:requiereMemoria a rdf:Property ;
+    rdfs:label "Nivel de memoria RAM necesario para su ejecución."@es ;
+    rdfs:domain cripto:AlgoritmoCriptografico ;
+    rdfs:range xsd:string .
+
+cripto:tieneLimitacionTecnica a rdf:Property ;
+    rdfs:label "Limitación específica de implementación o hardware."@es ;
+    rdfs:domain cripto:AlgoritmoCriptografico ;
+    rdfs:range rdfs:Literal ;
+    rdfs:subPropertyOf cripto:tieneLimitacionGeneral .
+
+cripto:tieneNivelSeguridad a rdf:Property ;
+    rdfs:label "Relaciona un algoritmo con su categoría de robustez."@es ;
+    rdfs:domain cripto:AlgoritmoCriptografico ;
+    rdfs:range cripto:EstadoSeguridad .
+
+cripto:tieneVelocidadEjecucion a rdf:Property ;
+    rdfs:label "Categoría cualitativa de rapidez (Alta, Media, Baja)."@es ;
+    rdfs:domain cripto:AlgoritmoCriptografico ;
+    rdfs:range xsd:string .
+
+cripto:utilizaClaveDeTamano a rdf:Property ;
+    rdfs:label "Define la longitud de clave recomendada para el algoritmo."@es ;
+    rdfs:domain cripto:AlgoritmoCriptografico ;
+    rdfs:range xsd:integer .
+
+cripto:AES_256 a cripto:CifradoSimetrico ;
+    rdfs:label "Estándar de Cifrado Avanzado de 256 bits"@es ;
+    cripto:añoDeCreacion "1998"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:BancaEnLinea ;
+    cripto:esVulnerableA "Ataques de canal lateral si no se implementa bien"@es ;
+    cripto:fueEstandarizadoPor "NIST" ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "Requiere hardware que soporte instrucciones AES-NI para máxima velocidad"@es ;
+    cripto:tieneLimitacionTecnica "Sensible a ataques de caché en implementaciones de software puras"@es ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 256 .
+
+cripto:ChaCha20 a cripto:CifradoSimetrico ;
+    rdfs:label "Cifrado de flujo de alta velocidad"@es ;
+    cripto:añoDeCreacion "2008"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:DispositivosMoviles ;
+    cripto:esVulnerableA "Ataques de reutilización de nonce (si se usa incorrectamente)"@es ;
+    cripto:fueEstandarizadoPor "IETF" ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "Es un cifrado de flujo, requiere un manejo estricto del Nonce"@es ;
+    cripto:tieneLimitacionTecnica "A diferencia de AES, no se beneficia de instrucciones como AES-NI, pero es más rápido en CPUs simples"@es ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 256 .
+
+cripto:Kyber a cripto:AlgoritmoPostCuantico ;
+    rdfs:label "Kyber - Estándar NIST para intercambio de claves cuántico"@es ;
+    cripto:añoDeCreacion "2024"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:InfraestructuraCritica ;
+    cripto:esVulnerableA "Ataques de canal lateral en implementaciones físicas"@es ;
+    cripto:fueEstandarizadoPor "NIST (FIPS 203)" ;
+    cripto:requiereMemoria "Media" ;
+    cripto:tieneLimitacionGeneral "Sustituto directo de Diffie-Hellman y RSA para el futuro" ;
+    cripto:tieneLimitacionTecnica "Basado en el problema de 'Learning with Errors' (LWE) en redes (lattices)" ;
+    cripto:tieneNivelSeguridad cripto:AlgoritmoPostCuantico ;
+    cripto:tieneVelocidadEjecucion "Alta" ;
+    cripto:utilizaClaveDeTamano 1632 .
+
+cripto:RSA_4096 a cripto:CifradoAsimetrico ;
+    rdfs:label "RSA con clave de 4096 bits (Alta seguridad)"@es ;
+    cripto:añoDeCreacion "2002"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:AlmacenamientoLargoPlazo ;
+    cripto:esVulnerableA "Algoritmo de Shor en computadoras cuánticas de gran escala"@es ;
+    cripto:fueEstandarizadoPor "NIST / BSI" ;
+    cripto:requiereMemoria "Alta" ;
+    cripto:tieneLimitacionGeneral "Generar claves de este tamaño puede tardar varios segundos en CPUs lentas"@es ;
+    cripto:tieneLimitacionTecnica "El proceso de descifrado es significativamente más lento que en RSA 2048"@es ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Baja" ;
+    cripto:utilizaClaveDeTamano 4096 .
+
+cripto:SHA_3 a cripto:FuncionHash ;
+    cripto:añoDeCreacion "2015"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:Blockchain ;
+    cripto:esVulnerableA "Resistente a la mayoría de ataques conocidos de SHA-2"@es ;
+    cripto:fueEstandarizadoPor "NIST" ;
+    cripto:requiereMemoria "Media" ;
+    cripto:tieneLimitacionGeneral "Estructura de esponja, muy diferente a SHA-2"@es ;
+    cripto:tieneLimitacionTecnica "Más lento en hardware estándar que SHA-2 pero más seguro"@es ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Media" ;
+    cripto:utilizaClaveDeTamano 512 .
+
+cripto:TDES a cripto:CifradoSimetrico ;
+    rdfs:label "Triple DES - Aplicación triple del algoritmo DES"@es ;
+    cripto:añoDeCreacion "1998"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:SistemasHeredados ;
+    cripto:esVulnerableA "Ataque Meet-in-the-middle"@es ;
+    cripto:fueEstandarizadoPor "NIST" ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "Tres veces más lento que DES y menos eficiente que AES"@es ;
+    cripto:tieneLimitacionTecnica "Tamaño de bloque de 64 bits lo hace vulnerable a ataques de cumpleaños en grandes volúmenes de datos"@es ;
+    cripto:tieneNivelSeguridad cripto:Obsoleto ;
+    cripto:tieneVelocidadEjecucion "Baja" ;
+    cripto:utilizaClaveDeTamano 168 .
+
+cripto:tieneLimitacionGeneral a rdf:Property ;
+    rdfs:label "Propiedad general para cualquier restricción del algoritmo."@es ;
+    rdfs:domain cripto:AlgoritmoCriptografico ;
+    rdfs:range rdfs:Literal .
+
+cripto:ECC_256 a cripto:CifradoAsimetrico ;
+    rdfs:label "Criptografía de Curva Elíptica de 256 bits"@es ;
+    cripto:añoDeCreacion "1985"^^xsd:gYear ;
+    cripto:esRecomendadoPara cripto:Blockchain ;
+    cripto:esVulnerableA "Ataques de canal lateral en implementaciones mal protegidas"@es ;
+    cripto:fueEstandarizadoPor "NIST / SECG" ;
+    cripto:requiereMemoria "Baja" ;
+    cripto:tieneLimitacionGeneral "Más difícil de implementar correctamente que RSA"@es ;
+    cripto:tieneLimitacionTecnica "La seguridad depende totalmente de la curva elegida (ej. secp256k1)"@es ;
+    cripto:tieneNivelSeguridad cripto:AltaSeguridad ;
+    cripto:tieneVelocidadEjecucion "Media" ;
+    cripto:utilizaClaveDeTamano 256 .
+
